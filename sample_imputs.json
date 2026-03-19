@@ -1,0 +1,110 @@
+{
+  "student_profile": {
+    "student_id": "UPSC_STU_001",
+    "name": "Rohit Sharma",
+    "exam_target": "UPSC CSE 2026",
+    "study_hours_per_day": 6,
+    "exam_stage": "intermediate"
+  },
+
+  "subjects_progress": {
+    "Polity": 0.65,
+    "Economy": 0.35,
+    "History": 0.50,
+    "Geography": 0.40,
+    "Environment": 0.25
+  },
+
+  "recent_test_attempts": [
+    {
+      "question_id": "Q101",
+      "subject": "Economy",
+      "topic": "Inflation",
+      "correct": false
+    },
+    {
+      "question_id": "Q102",
+      "subject": "Economy",
+      "topic": "Inflation",
+      "correct": false
+    },
+    {
+      "question_id": "Q103",
+      "subject": "Economy",
+      "topic": "GDP",
+      "correct": true
+    },
+    {
+      "question_id": "Q104",
+      "subject": "Polity",
+      "topic": "Fundamental Rights",
+      "correct": false
+    },
+    {
+      "question_id": "Q105",
+      "subject": "Polity",
+      "topic": "Directive Principles",
+      "correct": true
+    },
+    {
+      "question_id": "Q106",
+      "subject": "History",
+      "topic": "Revolt of 1857",
+      "correct": true
+    },
+    {
+      "question_id": "Q107",
+      "subject": "History",
+      "topic": "Indian National Congress",
+      "correct": false
+    },
+    {
+      "question_id": "Q108",
+      "subject": "Geography",
+      "topic": "Monsoon System",
+      "correct": true
+    },
+    {
+      "question_id": "Q109",
+      "subject": "Environment",
+      "topic": "Biodiversity",
+      "correct": false
+    },
+    {
+      "question_id": "Q110",
+      "subject": "Environment",
+      "topic": "Climate Change",
+      "correct": false
+    }
+  ],
+
+  "upsc_syllabus_topics": {
+    "Polity": [
+      "Fundamental Rights",
+      "Directive Principles",
+      "Parliament",
+      "Judiciary"
+    ],
+    "Economy": [
+      "Inflation",
+      "GDP",
+      "Fiscal Policy",
+      "Monetary Policy"
+    ],
+    "History": [
+      "Revolt of 1857",
+      "Indian National Congress",
+      "Freedom Movement"
+    ],
+    "Geography": [
+      "Monsoon System",
+      "Rivers of India",
+      "Soils"
+    ],
+    "Environment": [
+      "Biodiversity",
+      "Climate Change",
+      "Protected Areas"
+    ]
+  }
+}

@@ -1,0 +1,47 @@
+/* ===== ProgressBar ===== */
+.progress-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.progress-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: 2px;
+}
+
+.progress-icon {
+  font-size: 14px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.progress-subject {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  flex: 1;
+}
+
+.progress-pct {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+.progress-track {
+  height: 6px;
+  background: var(--color-border-light);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  width: var(--target-width);
+  animation: progressFill 900ms cubic-bezier(0.4, 0, 0.2, 1) both;
+  animation-delay: 200ms;
+}

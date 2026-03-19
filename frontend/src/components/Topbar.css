@@ -1,0 +1,223 @@
+/* ===== Topbar ===== */
+.topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  height: var(--topbar-height);
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--space-6);
+  gap: var(--space-4);
+  box-shadow: var(--shadow-xs);
+}
+
+.topbar-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-shrink: 0;
+}
+
+.topbar-logo {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, var(--color-indigo-500), var(--color-indigo-700));
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.35);
+  flex-shrink: 0;
+}
+
+.topbar-brand-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.topbar-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  letter-spacing: -0.3px;
+}
+
+.topbar-subtitle {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  font-weight: 500;
+  letter-spacing: 0.2px;
+}
+
+.topbar-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex: 1;
+  justify-content: flex-end;
+}
+
+.topbar-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.topbar-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.topbar-input {
+  height: 36px;
+  padding: 0 var(--space-3);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  color: var(--color-text-primary);
+  outline: none;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  width: 220px;
+}
+
+.topbar-input--narrow {
+  width: 80px;
+}
+
+.topbar-input::placeholder {
+  color: var(--color-text-muted);
+}
+
+.topbar-input:focus {
+  border-color: var(--color-indigo-500);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+  background: white;
+}
+
+.topbar-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  height: 36px;
+  padding: 0 var(--space-5);
+  background: linear-gradient(135deg, var(--color-indigo-500), var(--color-indigo-600));
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.35);
+  white-space: nowrap;
+  flex-shrink: 0;
+  align-self: flex-end;
+}
+
+.topbar-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, var(--color-indigo-600), var(--color-indigo-700));
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.45);
+  transform: translateY(-1px);
+}
+
+.topbar-btn:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(99, 102, 241, 0.3);
+}
+
+.topbar-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.topbar-btn--loading {
+  pointer-events: none;
+}
+
+.topbar-btn-spinner {
+  width: 13px;
+  height: 13px;
+  border: 2px solid rgba(255,255,255,0.35);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.75s linear infinite;
+  flex-shrink: 0;
+}
+
+/* Active student chip */
+.topbar-student-chip {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: var(--color-indigo-50);
+  border: 1.5px solid var(--color-indigo-100);
+  border-radius: var(--radius-md);
+  padding: 5px var(--space-3) 5px 6px;
+  flex-shrink: 0;
+}
+
+.topbar-student-avatar {
+  width: 28px;
+  height: 28px;
+  background: linear-gradient(135deg, var(--color-indigo-500), var(--color-indigo-700));
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.topbar-student-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.topbar-student-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-indigo-700);
+  line-height: 1.2;
+}
+
+.topbar-student-meta {
+  font-size: 10px;
+  color: var(--color-indigo-400);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+/* No-student prompt */
+.topbar-no-student {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  background: var(--color-bg);
+  border: 1.5px dashed var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 6px var(--space-3);
+  white-space: nowrap;
+}
+
