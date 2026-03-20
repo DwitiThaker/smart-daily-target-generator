@@ -1,51 +1,22 @@
-const API = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000"
+const API = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000";
+
+function buildUrl(base, path) {
+  return `${base.replace(/\/+$/, "")}/${path.replace(/^\/+/, "")}`;
+}
 
 async function request(url, options = {}) {
-  const res = await fetch(`${API}${url}`, {
+  const fullUrl = buildUrl(API, url);
+
+  const res = await fetch(fullUrl, {
     headers: { "Content-Type": "application/json" },
     ...options,
-  })
-  const data = await res.json().catch(() => ({}))
-  if (!res.ok) throw new Error(data.detail || `Request failed (${res.status})`)
-  return data
-}
+  });
 
-// ── Students ──────────────────────────────────────────────
-export async function getStudent(studentId) {
-  return request(`/students/${studentId}`)
-}
+  const data = await res.json().catch(() => ({}));
 
-export async function createStudent(data) {
-  return request("/students", {
-    method: "POST",
-    body: JSON.stringify(data),
-  })
-}
+  if (!res.ok) {
+    throw new Error(data.detail || `Request failed (${res.status})`);
+  }
 
-export async function updateStudent(studentId, data) {
-  return request(`/students/${studentId}`, {
-    method: "PATCH",
-    body: JSON.stringify(data),
-  })
-}
-
-// ── Attempts ─────────────────────────────────────────────
-export async function createAttempt(data) {
-  return request("/attempts", {
-    method: "POST",
-    body: JSON.stringify(data),
-  })
-}
-
-// ── Weak Topics ───────────────────────────────────────────
-export async function getWeakTopics(studentId) {
-  return request(`/students/${studentId}/weak-topics`)
-}
-
-// ── Daily Plan ────────────────────────────────────────────
-export async function generatePlan(studentId, hours) {
-  return request("/generate-daily-plan", {
-    method: "POST",
-    body: JSON.stringify({ student_id: studentId, study_hours_override: hours }),
-  })
+  return data;
 }
