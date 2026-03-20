@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './WeakTopics.css'
 import { getWeakTopics } from '../api'
 
@@ -41,20 +41,37 @@ function WeakRow({ item, index }) {
   )
 }
 
-export default function WeakTopics({ defaultStudentId = '' }) {
+export default function WeakTopics({ student, defaultStudentId = '' }) {
   const [studentId, setStudentId] = useState(defaultStudentId)
   const [topics, setTopics] = useState(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
-  const [filter, setFilter] = useState('all') // 'all' | 'weak' | 'ok'
+  const [filter, setFilter] = useState('all')
 
-  async function handleLoad() {
-    if (!studentId.trim()) return
+  // ✅ AUTO-FILL FROM APP (KEY FIX)
+  useEffect(() => {
+    if (student?.id) {
+      setStudentId(student.id)
+    }
+  }, [student])
+
+  // ✅ OPTIONAL: AUTO-LOAD WHEN STUDENT AVAILABLE (great for demo)
+  useEffect(() => {
+    if (student?.id) {
+      handleLoad(student.id)
+    }
+  }, [student])
+
+  async function handleLoad(idOverride) {
+    const idToUse = idOverride || studentId
+
+    if (!idToUse.trim()) return
     setLoading(true)
     setError(null)
     setTopics(null)
+
     try {
-      const res = await getWeakTopics(studentId.trim())
+      const res = await getWeakTopics(idToUse.trim())
       setTopics(res)
     } catch (err) {
       setError(err.message)
@@ -67,10 +84,13 @@ export default function WeakTopics({ defaultStudentId = '' }) {
   const okCount   = topics?.filter(t => !t.weak).length ?? 0
 
   const filtered = topics
-    ? (filter === 'weak' ? topics.filter(t => t.weak) : filter === 'ok' ? topics.filter(t => !t.weak) : topics)
+    ? (filter === 'weak'
+        ? topics.filter(t => t.weak)
+        : filter === 'ok'
+        ? topics.filter(t => !t.weak)
+        : topics)
     : []
 
-  // Group by subject
   const grouped = {}
   filtered.forEach(item => {
     if (!grouped[item.subject]) grouped[item.subject] = []
@@ -81,7 +101,9 @@ export default function WeakTopics({ defaultStudentId = '' }) {
     <div className="wt-container animate-fade-in-up">
       <div className="wt-header">
         <h1 className="wt-title">Weak Topic Analyzer</h1>
-        <p className="wt-subtitle">Identifies topics where your performance signals a need for focused revision</p>
+        <p className="wt-subtitle">
+          Identifies topics where your performance signals a need for focused revision
+        </p>
       </div>
 
       {/* Lookup Bar */}
@@ -94,25 +116,45 @@ export default function WeakTopics({ defaultStudentId = '' }) {
             value={studentId}
             onChange={e => setStudentId(e.target.value)}
             onKeyDown={e => e.key === 'Enter' && handleLoad()}
+            // Optional: disable if student already loaded
+            disabled={!!student}
           />
-          <button id="wt-analyze-btn" className="wt-analyze-btn" onClick={handleLoad} disabled={loading || !studentId.trim()}>
-            {loading ? <><span className="wt-spinner" />Analyzing…</> : (
+
+          <button
+            id="wt-analyze-btn"
+            className="wt-analyze-btn"
+            onClick={() => handleLoad()}
+            disabled={loading || !studentId.trim()}
+          >
+            {loading ? (
+              <>
+                <span className="wt-spinner" />
+                Analyzing…
+              </>
+            ) : (
               <>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  <circle cx="11" cy="11" r="8"/>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"/>
                 </svg>
                 Analyze
               </>
             )}
           </button>
         </div>
+
+        {/* ✅ Show loaded student */}
+        {student && (
+          <p style={{ marginTop: '8px', opacity: 0.7 }}>
+            Loaded: <strong>{student.name}</strong>
+          </p>
+        )}
       </div>
 
       {error && <div className="wt-error">{error}</div>}
 
       {topics && (
         <div className="wt-results animate-fade-in">
-          {/* Summary Chips */}
           <div className="wt-summary-row">
             <div className="wt-summary-chip wt-summary-chip--total">
               <span className="wt-summary-num">{topics.length}</span>
@@ -128,7 +170,6 @@ export default function WeakTopics({ defaultStudentId = '' }) {
             </div>
           </div>
 
-          {/* Filter Tabs */}
           <div className="wt-filter-tabs">
             {['all', 'weak', 'ok'].map(f => (
               <button
@@ -141,7 +182,6 @@ export default function WeakTopics({ defaultStudentId = '' }) {
             ))}
           </div>
 
-          {/* Grouped Results */}
           {Object.keys(grouped).length === 0 ? (
             <div className="wt-empty">No topics match that filter.</div>
           ) : (
@@ -162,7 +202,9 @@ export default function WeakTopics({ defaultStudentId = '' }) {
       {!topics && !loading && !error && (
         <div className="wt-placeholder animate-fade-in">
           <span className="wt-placeholder-icon">🔍</span>
-          <p>Enter a Student ID and click <strong>Analyze</strong> to see weak topic insights</p>
+          <p>
+            Enter a Student ID and click <strong>Analyze</strong> to see weak topic insights
+          </p>
         </div>
       )}
     </div>

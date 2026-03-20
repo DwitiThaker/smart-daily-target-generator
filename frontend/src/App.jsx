@@ -197,28 +197,24 @@ export default function App() {
                       <h3 className="how-it-works-title">How it works</h3>
                       <ol className="how-it-works-steps">
                         <li className="how-step">
-                          <span className="how-step-num">1</span>
                           <div>
                             <p className="how-step-title">Create a student profile</p>
                             <p className="how-step-desc">Go to the <strong>Students</strong> tab and fill in your name, daily hours, and subjects.</p>
                           </div>
                         </li>
                         <li className="how-step">
-                          <span className="how-step-num">2</span>
                           <div>
                             <p className="how-step-title">Log practice attempts</p>
                             <p className="how-step-desc">Use <strong>Log Attempt</strong> to record which questions you got right or wrong.</p>
                           </div>
                         </li>
                         <li className="how-step">
-                          <span className="how-step-num">3</span>
                           <div>
                             <p className="how-step-title">View detected weak topics</p>
                             <p className="how-step-desc">The <strong>Weak Topics</strong> tab shows where you need the most revision.</p>
                           </div>
                         </li>
                         <li className="how-step">
-                          <span className="how-step-num">4</span>
                           <div>
                             <p className="how-step-title">Generate your AI study plan</p>
                             <p className="how-step-desc">Click <strong>Generate Plan</strong> above for a smart, prioritised daily schedule.</p>

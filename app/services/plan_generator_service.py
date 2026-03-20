@@ -20,9 +20,7 @@ def _subject_progress(progress_map: Dict[str, float], subject: str) -> float:
     return float(progress_map.get(subject, 0.0))
 
 
-# -----------------------------
-# AI-like priority scoring
-# -----------------------------
+# scoring
 def _score_candidate(
     category: str,
     subject: str,
@@ -66,9 +64,7 @@ def _split_into_two(bucket_minutes: int) -> Tuple[int, int]:
     return a, b
 
 
-# --------------------------------
-# Revision topic detection
-# --------------------------------
+#revise topics
 async def _compute_revision_candidates(student_id: PydanticObjectId) -> List[Tuple[str, str]]:
 
     correct_attempts = await Attempt.find(
@@ -99,9 +95,7 @@ async def _compute_revision_candidates(student_id: PydanticObjectId) -> List[Tup
     return revision
 
 
-# --------------------------------
-# Main planner
-# --------------------------------
+#plan
 async def generate_daily_tasks(
     student: Student,
     study_hours_override: float | None = None
@@ -112,9 +106,7 @@ async def generate_daily_tasks(
 
     progress_map = student.subjects_progress or {}
 
-    # -----------------------------
-    # 1. Weak topic analysis
-    # -----------------------------
+    #analysis
     weak_results: List[WeakTopicResponse] = await compute_weak_topics_for_student(student.id)
 
     weak_candidates = []
@@ -139,9 +131,7 @@ async def generate_daily_tasks(
             "incorrect_count": w.incorrect_count
         })
 
-    # -----------------------------
-    # 2. Revision candidates
-    # -----------------------------
+    #revise
     revision_topics = await _compute_revision_candidates(student.id)
 
     revision_candidates = []
@@ -161,9 +151,7 @@ async def generate_daily_tasks(
             "score": score
         })
 
-    # -----------------------------
-    # 3. New topic candidates
-    # -----------------------------
+    #new topic
     subjects_sorted = sorted(progress_map.keys(), key=lambda s: progress_map.get(s, 0))
 
     new_candidates = []
@@ -191,9 +179,7 @@ async def generate_daily_tasks(
     all_candidates = weak_candidates + new_candidates + revision_candidates
     all_candidates.sort(key=lambda x: -x["score"])
 
-    # -----------------------------
-    # Low hours mode
-    # -----------------------------
+    # low hours
     if total_minutes <= LOW_HOURS_ONE_TASK_MAX_MINUTES:
 
         if not all_candidates:
@@ -221,9 +207,7 @@ async def generate_daily_tasks(
             _make_task(desc, c["subject"], c["topic"], total_minutes, c["category"])
         ]
 
-    # -----------------------------
-    # Bucket time allocation
-    # -----------------------------
+    # bucket time allocation
     weak_m = int(total_minutes * SPLIT_WEAK)
     new_m = int(total_minutes * SPLIT_NEW)
     rev_m = total_minutes - weak_m - new_m
