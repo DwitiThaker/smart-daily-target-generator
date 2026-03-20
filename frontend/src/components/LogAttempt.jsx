@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import './LogAttempt.css'
 import { createAttempt } from '../api'
+import { SUBJECT_TOPICS, getTopics } from '../subjectTopics'
 
-const FALLBACK_SUBJECTS = ['Polity', 'Economy', 'History', 'Geography', 'Environment', 'Science', 'Ethics']
+const FALLBACK_SUBJECTS = Object.keys(SUBJECT_TOPICS)
 
 const SAMPLE_ATTEMPTS = [
   { subject: 'Environment', topic: 'Biodiversity', is_correct: false },
@@ -36,6 +37,11 @@ export default function LogAttempt({ student }) {
 
   function setField(key, val) {
     setForm(f => ({ ...f, [key]: val }))
+  }
+
+  function handleSubjectChange(subject) {
+    // Reset topic whenever subject changes to prevent mismatched combinations
+    setForm(f => ({ ...f, subject, topic: '' }))
   }
 
   async function handleSubmit(e) {
@@ -133,7 +139,7 @@ export default function LogAttempt({ student }) {
                   className="la-input la-select"
                   required
                   value={form.subject}
-                  onChange={e => setField('subject', e.target.value)}
+                  onChange={e => handleSubjectChange(e.target.value)}
                 >
                   <option value="">Select subject…</option>
                   {subjectOptions.map(s => <option key={s} value={s}>{s}</option>)}
@@ -143,15 +149,39 @@ export default function LogAttempt({ student }) {
 
               <div className="la-field">
                 <label className="la-label">Topic</label>
-                <input
-                  id="la-topic"
-                  className="la-input"
-                  required
-                  placeholder="Type a topic…"
-                  value={form.topic}
-                  onChange={e => setField('topic', e.target.value)}
-                />
-                <span className="la-hint">e.g. Fundamental Rights, Inflation, Rivers</span>
+                {(() => {
+                  const topics = getTopics(form.subject)
+                  const noTopics = form.subject && topics.length === 0
+                  return (
+                    <>
+                      <select
+                        id="la-topic"
+                        className={`la-input la-select la-topic-select${!form.subject ? ' la-select--disabled' : ''}`}
+                        required
+                        disabled={!form.subject}
+                        value={form.topic}
+                        onChange={e => setField('topic', e.target.value)}
+                      >
+                        <option value="">
+                          {!form.subject
+                            ? 'Select a subject first…'
+                            : noTopics
+                            ? 'No topics available'
+                            : 'Select topic…'}
+                        </option>
+                        {topics.map(t => (
+                          <option key={t} value={t}>{t}</option>
+                        ))}
+                      </select>
+                      {noTopics && (
+                        <span className="la-hint la-hint--warn">No topics configured for this subject yet.</span>
+                      )}
+                    </>
+                  )
+                })()}
+                {!form.subject && (
+                  <span className="la-hint">Choose a subject to see available topics</span>
+                )}
               </div>
             </div>
 
